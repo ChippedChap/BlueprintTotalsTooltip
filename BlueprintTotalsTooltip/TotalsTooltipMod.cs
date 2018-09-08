@@ -20,6 +20,7 @@ namespace BlueprintTotalsTooltip
 		public SettingHandle<bool> CountForbidden { get; private set; }
 		public SettingHandle<int> TipXPosition { get; private set; }
 		public SettingHandle<int> TipYPosition { get; private set; }
+		public SettingHandle<bool> TransferSelection { get; private set; }
 		#endregion settings
 
 		public TotalsTooltipDrawer TotalsTipDrawer { get; }
@@ -37,6 +38,7 @@ namespace BlueprintTotalsTooltip
 		public override void SettingsChanged()
 		{
 			TotalsTipDrawer.ResolveSettings();
+			BlueprintSelectionTransferer.transferring = TransferSelection;
 			AssetLoader.trackedHighlightTexture.Apply();
 		}
 
@@ -58,6 +60,8 @@ namespace BlueprintTotalsTooltip
 			CountInStorage = Settings.GetHandle("countInStorage", "countInStorage_title".Translate(), "countInStorage_desc".Translate(), false);
 			CountForbidden = Settings.GetHandle("countForbidden", "countForbidden_title".Translate(), "countForbidden_desc".Translate(), false);
 			ResolveTipPositionHandlers();
+			TransferSelection = Settings.GetHandle("transferSel", "transferSel_title".Translate(), "transferSel_desc".Translate(), true);
+			BlueprintSelectionTransferer.transferring = TransferSelection;
 			TotalsTipDrawer.ResolveSettings();
 		}
 

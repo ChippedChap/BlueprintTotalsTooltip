@@ -34,4 +34,7 @@
 	
 	<tooltipPosition_title>Tooltip Position</tooltipPosition_title>
 	<tooltipPosition_desc>Use the two sliders to set where the tooltip appears relative to tracked blueprints.\n\nThe translucent rectangle is the rectangle highlighting your tracked blueprints, while the white box is where the tooltip would be.</tooltipPosition_desc>
+	
+	<transferSel_title>Transfer Selection to New Frames</transferSel_title>
+	<transferSel_desc>If enabled, a selected blueprint that is turned into a frame when a colonist adds building materials to it will automatically be selected.</transferSel_desc>
 </LanguageData>

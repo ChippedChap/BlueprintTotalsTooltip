@@ -1,6 +1,7 @@
 ﻿using BlueprintTotalsTooltip.TotalsTipUtilities;
 using BlueprintTotalsTooltip.ChangeDetection;
 using BlueprintTotalsTooltip.SelectorChangeNotifiers;
+using BlueprintTotalsTooltip.FrameChangeNotifiers;
 using BlueprintTotalsTooltip.LTChangeNotifiers;
 using BlueprintTotalsTooltip.TotalsTipSettingsUtilities;
 using System.Collections.Generic;
@@ -47,6 +48,7 @@ namespace BlueprintTotalsTooltip
 			modInstance = mod;
 			Tracker = new ConstructibleTotalsTracker();
 			SelectionChangeNotifierData.RegisterMethod(OnSelectionChange);
+			FrameChangeNotifierData.RegisterMethod(OnSelectionChange);
 			PlaySettingsChangeDetector.RegisterMethod(OnPlaySettingChange);
 			LTAddNotifier.RegisterMethod(OnThingAdded);
 			LTRemoveNotifier.RegisterMethod(OnThingRemove);

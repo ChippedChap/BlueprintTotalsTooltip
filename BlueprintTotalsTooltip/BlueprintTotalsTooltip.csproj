@@ -62,8 +62,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlueprintSelectionTransferer.cs" />
     <Compile Include="ChangeDetection\PlaySettingsChangeDetector.cs" />
     <Compile Include="ConstructibleTotalsTracker.cs" />
+    <Compile Include="FrameChangeNotifiers\FrameAddNotifier.cs" />
+    <Compile Include="FrameChangeNotifiers\FrameChangeNotifierData.cs" />
+    <Compile Include="FrameChangeNotifiers\FrameRemoveNotifier.cs" />
     <Compile Include="LTChangeNotifiers\LTAddNotifier.cs" />
     <Compile Include="LTChangeNotifiers\LTRemoveNotifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
