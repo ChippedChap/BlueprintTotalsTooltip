@@ -128,6 +128,8 @@ set /p RIM_DIR=&lt;"$(ProjectDir)LocalDev\rim_dir.txt"
 set /p ZA_DIR=&lt;"$(ProjectDir)LocalDev\7za_dir.txt"
 set /p DIST_DIR=&lt;"$(ProjectDir)LocalDev\dist_dir.txt"
 
+@echo Deleting old assemblies from Distribution...
+del /q "$(ProjectDir)Distribution\%25ModName%25\Assemblies\*"
 @echo Copying assemblies to Distribution $(Targetname) files...
 if not exist "$(ProjectDir)Distribution\%25ModName%25\Assemblies" mkdir "$(ProjectDir)Distribution\%25ModName%25\Assemblies"
 copy /Y "$(TargetDir)"%25ModName%25*.dll "$(ProjectDir)Distribution\%25ModName%25\Assemblies"
@@ -135,7 +137,7 @@ copy /Y "$(TargetDir)"%25ModName%25*.dll "$(ProjectDir)Distribution\%25ModName%2
 if %25UsingHarmony%25 EQU true (
 copy /Y "$(ProjectDir)LocalDev\Refs\"0Harmony.dll "$(ProjectDir)Distribution\%25ModName%25\Assemblies"
 )
-if %25UseChecker%25 equ true (
+if %25UseChecker%25 EQU true (
 copy /Y "$(ProjectDir)LocalDev\Refs\"$HugsLibChecker.dll "$(ProjectDir)Distribution\%25ModName%25\Assemblies"
 )
 
