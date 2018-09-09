@@ -121,6 +121,7 @@ copy /Y "%25RIM_DIR%25\Mods\HugsLib\Assemblies\HugsLib.dll" "$(ProjectDir)LocalD
     <PostBuildEvent>@echo $(Targetname)
 SET ModName=BlueprintTotalsTooltip
 SET UsingHarmony=true
+SET UseChecker=true
 @echo ...
 @echo set lpath vars from LocalDev storage...
 set /p RIM_DIR=&lt;"$(ProjectDir)LocalDev\rim_dir.txt"
@@ -133,6 +134,8 @@ copy /Y "$(TargetDir)"%25ModName%25*.dll "$(ProjectDir)Distribution\%25ModName%2
 @echo Copying Harmony assembly to Distribution $(Targetname) files...
 if %25UsingHarmony%25 EQU true (
 copy /Y "$(ProjectDir)LocalDev\Refs\"0Harmony.dll "$(ProjectDir)Distribution\%25ModName%25\Assemblies"
+)
+if %25UseChecker%25 equ true (
 copy /Y "$(ProjectDir)LocalDev\Refs\"$HugsLibChecker.dll "$(ProjectDir)Distribution\%25ModName%25\Assemblies"
 )
 
