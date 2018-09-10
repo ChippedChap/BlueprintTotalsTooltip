@@ -183,6 +183,7 @@ namespace BlueprintTotalsTooltip
 			Widgets.ThingIcon(iconRect, count.ThingDef);
 			Rect labelRect = new Rect(rowRect.x + listElementsHeight, rowRect.y, rowRect.width - listElementsHeight, rowRect.height);
 			Text.Anchor = TextAnchor.MiddleLeft;
+			Text.Font = GameFont.Small;
 			int difference = (countStorage) ? Find.VisibleMap.GetCountInStorageDifference(count) : Find.VisibleMap.GetCountOnMapDifference(count, countForbiddenItems);
 			if (difference > 0) GUI.color = Color.red;
 			Widgets.Label(labelRect, count.Count.ToString());
