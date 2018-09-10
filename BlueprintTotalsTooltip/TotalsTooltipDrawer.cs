@@ -134,7 +134,7 @@ namespace BlueprintTotalsTooltip
 
 		public void OnGUI()
 		{
-			if (Find.CurrentMap != null && !WorldRendererUtility.WorldRenderedNow)
+			if (Find.VisibleMap != null && !WorldRendererUtility.WorldRenderedNow)
 			{
 				cameraChangeDetector.OnGUI();
 				if (Tracker.NumberTracked > 0 && shouldDraw)
@@ -148,7 +148,7 @@ namespace BlueprintTotalsTooltip
 
 		private void DrawToolTip()
 		{
-			List<ThingDefCount> trackedRequirements = Tracker.GetTrackedTotals();
+			List<ThingCount> trackedRequirements = Tracker.GetTrackedTotals();
 			if (trackedRequirements.Count > 0)
 			{
 				float toolTipWidth = Text.CalcSize(trackedRequirements[0].Count.ToString()).x + listElementsHeight;
@@ -162,7 +162,7 @@ namespace BlueprintTotalsTooltip
 				Rect innerTipRect = tooltipRect.ContractedBy(listElementsMargin).WidthContractedBy(xOffsetFromContainer);
 				for (int i = 0; i < trackedRequirements.Count; i++)
 				{
-					ThingDefCount count = trackedRequirements[i];
+					ThingCount count = trackedRequirements[i];
 					DrawRequirementRow(count, innerTipRect, i);
 				}
 			}
@@ -176,14 +176,14 @@ namespace BlueprintTotalsTooltip
 			tooltipRect.position = new Vector2(xPos, yPos);
 		}
 
-		private void DrawRequirementRow(ThingDefCount count, Rect toolTipRect, int posInList)
+		private void DrawRequirementRow(ThingCount count, Rect toolTipRect, int posInList)
 		{
 			Rect rowRect = new Rect(toolTipRect.x, toolTipRect.y + posInList * listElementsHeight, toolTipRect.width, listElementsHeight);
 			Rect iconRect = new Rect(rowRect.x, rowRect.y, listElementsHeight, listElementsHeight).ContractedBy(1.5f);
 			Widgets.ThingIcon(iconRect, count.ThingDef);
 			Rect labelRect = new Rect(rowRect.x + listElementsHeight, rowRect.y, rowRect.width - listElementsHeight, rowRect.height);
 			Text.Anchor = TextAnchor.MiddleLeft;
-			int difference = (countStorage) ? Find.CurrentMap.GetCountInStorageDifference(count) : Find.CurrentMap.GetCountOnMapDifference(count, countForbiddenItems);
+			int difference = (countStorage) ? Find.VisibleMap.GetCountInStorageDifference(count) : Find.VisibleMap.GetCountOnMapDifference(count, countForbiddenItems);
 			if (difference > 0) GUI.color = Color.red;
 			Widgets.Label(labelRect, count.Count.ToString());
 			GUI.color = Color.white;
@@ -191,7 +191,7 @@ namespace BlueprintTotalsTooltip
 			if (tooltipsEnabled) DoRowTooltip(rowRect, count, difference);
 		}
 
-		private void DoRowTooltip(Rect tooltipRegion, ThingDefCount count, int difference)
+		private void DoRowTooltip(Rect tooltipRegion, ThingCount count, int difference)
 		{
 			int present = -difference + count.Count;
 			object[] translateArgs = new object[] { count.Count, present };

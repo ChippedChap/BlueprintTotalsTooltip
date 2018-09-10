@@ -14,7 +14,7 @@ namespace BlueprintTotalsTooltip
 		#endregion settings
 
 		private HashSet<IConstructible> trackedConstructibles = new HashSet<IConstructible>();
-		private List<ThingDefCount> cachedCosts;
+		private List<ThingCount> cachedCosts;
 		private bool cacheUpdated = false;
 
 		private CellRect containingRect = CellRect.Empty;
@@ -106,16 +106,16 @@ namespace BlueprintTotalsTooltip
 		}
 		#endregion track updating
 
-		public List<ThingDefCount> GetTrackedTotals()
+		public List<ThingCount> GetTrackedTotals()
 		{
 			if (!cacheUpdated)
 			{
-				List<ThingDefCount> protoCosts = new List<ThingDefCount>();
+				List<ThingCount> protoCosts = new List<ThingCount>();
 				foreach (IConstructible constructible in trackedConstructibles)
 				{
 					for (int i = 0; i < constructible.MaterialsNeededSafe().Count; i++)
 					{
-						ThingDefCount matCount = constructible.MaterialsNeededSafe()[i];
+						ThingCount matCount = constructible.MaterialsNeededSafe()[i];
 						int sameThingDefIndex = protoCosts.FindIndex(x => x.ThingDef == matCount.ThingDef);
 						if (sameThingDefIndex > -1)
 							protoCosts[sameThingDefIndex] = ConstructibleUtility.AddThingDefCounts(protoCosts[sameThingDefIndex], matCount);
@@ -151,7 +151,7 @@ namespace BlueprintTotalsTooltip
 
 		private HashSet<IConstructible> BuildVisibleSetAndRect()
 		{
-			List<Thing> candidateThings = Find.CurrentMap.listerThings.ThingsInGroup(ThingRequestGroup.Construction);
+			List<Thing> candidateThings = Find.VisibleMap.listerThings.ThingsInGroup(ThingRequestGroup.Construction);
 			HashSet<IConstructible> visibleConstructibles = new HashSet<IConstructible>();
 			CellRectBuilder crBuilder = new CellRectBuilder();
 			for (int i = 0; i < candidateThings.Count; i++)

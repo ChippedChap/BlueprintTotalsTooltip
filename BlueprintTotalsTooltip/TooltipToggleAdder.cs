@@ -16,7 +16,7 @@ namespace BlueprintTotalsTooltip
 		static void Postfix(WidgetRow row, bool worldView)
 		{
 			if (worldView || row == null) return;
-			row.ToggleableIcon(ref TotalsTooltipDrawer.shouldDraw, AssetLoader.totalsTooltipToggleTexture, "ShowTotalsTooltipTip".Translate(new object[] { toggleTipDraw.MainKeyLabel }), SoundDefOf.Mouseover_ButtonToggle);
+			row.ToggleableIcon(ref TotalsTooltipDrawer.shouldDraw, AssetLoader.totalsTooltipToggleTexture, "ShowTotalsTooltipTip".Translate(new object[] { toggleTipDraw.MainKeyLabel }), null);
 			CheckDrawSettingToggle();
 		}
 
@@ -27,9 +27,9 @@ namespace BlueprintTotalsTooltip
 				TotalsTooltipDrawer.shouldDraw = !TotalsTooltipDrawer.shouldDraw;
 				PlaySettingsChangeDetector.NotifyAll();
 				if (TotalsTooltipDrawer.shouldDraw)
-					SoundDefOf.Checkbox_TurnedOn.PlayOneShotOnCamera(null);
+					SoundDefOf.CheckboxTurnedOn.PlayOneShotOnCamera(null);
 				else
-					SoundDefOf.Checkbox_TurnedOff.PlayOneShotOnCamera(null);
+					SoundDefOf.CheckboxTurnedOff.PlayOneShotOnCamera(null);
 			}
 		}
 	}

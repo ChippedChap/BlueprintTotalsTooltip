@@ -14,7 +14,7 @@ namespace BlueprintTotalsTooltip
 		static AssetLoader()
 		{
 			ModSettingsPack modSettings = HugsLibController.SettingsManager.GetModSettings("BlueprintTotalsTooltip");
-			float alpha = float.Parse(modSettings.PeekValue("highlightOpacity"));
+			float alpha = float.Parse(modSettings.PeekValue("highlightOpacity") ?? "0.1");
 			trackedHighlightTexture.SetPixel(0, 0, new Color(1f, 1f, 1f, alpha));
 			trackedHighlightTexture.Apply();
 		}
