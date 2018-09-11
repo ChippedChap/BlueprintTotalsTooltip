@@ -39,7 +39,6 @@ namespace BlueprintTotalsTooltip
 		{
 			TotalsTipDrawer.ResolveSettings();
 			BlueprintSelectionTransferer.transferring = TransferSelection;
-			AssetLoader.trackedHighlightTexture.Apply();
 		}
 
 		public override void DefsLoaded()
@@ -78,6 +77,7 @@ namespace BlueprintTotalsTooltip
 			TipYPosition.CustomDrawer = TipXCustomDrawer;
 			TipYPosition.VisibilityPredicate = delegate { return false; };
 		}
+
 		private bool OpacityCustomDrawer(Rect rect)
 		{
 			Rect sliderRect = new Rect(rect.x, rect.y, rect.width - 3f, rect.height);

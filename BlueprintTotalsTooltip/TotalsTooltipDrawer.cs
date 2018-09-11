@@ -17,6 +17,8 @@ namespace BlueprintTotalsTooltip
 		#region player settings
 		private bool clampTip;
 		private float clampMargin;
+		private bool highlightEnabled;
+		private Texture2D highlightRect;
 		private CameraZoomRange maximumZoom;
 		private bool trackingVisible;
 		private bool tooltipsEnabled;
@@ -60,6 +62,8 @@ namespace BlueprintTotalsTooltip
 		{
 			clampTip = modInstance.ClampTipToScreen;
 			clampMargin = modInstance.TooltipClampMargin;
+			highlightRect = AssetLoader.GetPreloadedTexOfOpacity(modInstance.HighlightOpacity);
+			highlightEnabled = modInstance.HighlightOpacity.Value != 0f;
 			trackingVisible = modInstance.TrackingVisible;
 			maximumZoom = modInstance.ZoomForVisibleTracking;
 			tooltipsEnabled = modInstance.ShowRowToolTips;
@@ -67,7 +71,6 @@ namespace BlueprintTotalsTooltip
 			countForbiddenItems = modInstance.CountForbidden;
 			xPosition = (RectDimensionPosition)modInstance.TipXPosition.Value;
 			yPosition = (RectDimensionPosition)modInstance.TipYPosition.Value;
-			AssetLoader.trackedHighlightTexture.SetPixel(0, 0, new Color(1f, 1f, 1f, modInstance.HighlightOpacity));
 			Tracker.ResolveSettings(modInstance);
 			OnPlaySettingChange();
 		}
@@ -139,8 +142,7 @@ namespace BlueprintTotalsTooltip
 				cameraChangeDetector.OnGUI();
 				if (Tracker.NumberTracked > 0 && shouldDraw)
 				{
-					if (AssetLoader.trackedHighlightTexture.GetPixel(1, 1).a != 0)
-						Tracker.HighlightTracked(AssetLoader.trackedHighlightTexture, highlightMargin);
+					if (highlightEnabled) Tracker.HighlightTracked(highlightRect, highlightMargin);
 					DrawToolTip();
 				}
 			}
