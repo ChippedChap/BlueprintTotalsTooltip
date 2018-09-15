@@ -15,15 +15,8 @@ namespace BlueprintTotalsTooltip
 	class TotalsTooltipDrawer
 	{
 		#region player settings
-		private bool clampTip;
-		private float clampMargin;
 		private bool highlightEnabled;
 		private Texture2D highlightRect;
-		private CameraZoomRange maximumZoom;
-		private bool trackingVisible;
-		private bool tooltipsEnabled;
-		private bool countStorage;
-		private bool countForbiddenItems;
 
 		private RectDimensionPosition xPosition;
 		private RectDimensionPosition yPosition;
@@ -41,7 +34,7 @@ namespace BlueprintTotalsTooltip
 
 		private bool zoomWasValid = false;
 
-		public bool ZoomIsValid { get { return (int)Find.CameraDriver.CurrentZoom <= (int)maximumZoom; } }
+		public bool ZoomIsValid { get { return (int)Find.CameraDriver.CurrentZoom <= (int)modInstance.ZoomForVisibleTracking.Value; } }
 
 		public ConstructibleTotalsTracker Tracker { get; }
 
@@ -60,15 +53,8 @@ namespace BlueprintTotalsTooltip
 
 		public void ResolveSettings()
 		{
-			clampTip = modInstance.ClampTipToScreen;
-			clampMargin = modInstance.TooltipClampMargin;
 			highlightRect = AssetLoader.GetPreloadedTexOfOpacity(modInstance.HighlightOpacity);
 			highlightEnabled = modInstance.HighlightOpacity.Value != 0f;
-			trackingVisible = modInstance.TrackingVisible;
-			maximumZoom = modInstance.ZoomForVisibleTracking;
-			tooltipsEnabled = modInstance.ShowRowToolTips;
-			countStorage = modInstance.CountInStorage;
-			countForbiddenItems = modInstance.CountForbidden;
 			xPosition = (RectDimensionPosition)modInstance.TipXPosition.Value;
 			yPosition = (RectDimensionPosition)modInstance.TipYPosition.Value;
 			Tracker.ResolveSettings(modInstance);
@@ -80,7 +66,7 @@ namespace BlueprintTotalsTooltip
 		{
 			if (shouldDraw && !WorldRendererUtility.WorldRenderedNow)
 			{
-				if (Find.Selector.NumSelected == 0 && ZoomIsValid && trackingVisible)
+				if (Find.Selector.NumSelected == 0 && ZoomIsValid && modInstance.TrackingVisible)
 				{
 					Tracker.TrackVisibleConstructibles();
 				}
@@ -96,7 +82,7 @@ namespace BlueprintTotalsTooltip
 		{
 			if (shouldDraw && !WorldRendererUtility.WorldRenderedNow)
 			{
-				if (Find.Selector.NumSelected == 0 && trackingVisible)
+				if (Find.Selector.NumSelected == 0 && modInstance.TrackingVisible)
 					Tracker.TrackVisibleConstructibles();
 				else
 					Tracker.TrackSelectedConstructibles();
@@ -105,7 +91,7 @@ namespace BlueprintTotalsTooltip
 
 		public void OnCameraChange()
 		{
-			if (shouldDraw && trackingVisible)
+			if (shouldDraw && modInstance.TrackingVisible)
 			{
 				if (Find.Selector.NumSelected == 0)
 				{
@@ -120,7 +106,7 @@ namespace BlueprintTotalsTooltip
 
 		public void OnThingAdded(Thing thing)
 		{
-			if (Find.Selector.NumSelected == 0 && trackingVisible && shouldDraw && !WorldRendererUtility.WorldRenderedNow)
+			if (Find.Selector.NumSelected == 0 && modInstance.TrackingVisible && shouldDraw && !WorldRendererUtility.WorldRenderedNow)
 				if (thing is IConstructible)
 				{
 					Tracker.TryTrackConstructible(thing);
@@ -129,7 +115,7 @@ namespace BlueprintTotalsTooltip
 
 		public void OnThingRemove(Thing thing)
 		{
-			if (Find.Selector.NumSelected == 0 && trackingVisible && shouldDraw && !WorldRendererUtility.WorldRenderedNow)
+			if (Find.Selector.NumSelected == 0 && modInstance.TrackingVisible && shouldDraw && !WorldRendererUtility.WorldRenderedNow)
 				if (thing is IConstructible)
 					Tracker.TryUntrackConstructible(thing);
 		}
@@ -159,8 +145,8 @@ namespace BlueprintTotalsTooltip
 				toolTipHeight += listElementsMargin * 2;
 				Rect tooltipRect = new Rect(0f, 0f, toolTipWidth, toolTipHeight);
 				PositionTipRect(ref tooltipRect);
-				if (clampTip)
-					tooltipRect = tooltipRect.ClampRectInRect(new Rect(0, 0, UI.screenWidth, UI.screenHeight).ContractedBy(clampMargin));
+				if (modInstance.ClampTipToScreen)
+					tooltipRect = tooltipRect.ClampRectInRect(new Rect(0, 0, UI.screenWidth, UI.screenHeight).ContractedBy(modInstance.TooltipClampMargin));
 				Rect innerTipRect = tooltipRect.ContractedBy(listElementsMargin).WidthContractedBy(xOffsetFromContainer);
 				for (int i = 0; i < trackedRequirements.Count; i++)
 				{
@@ -185,19 +171,19 @@ namespace BlueprintTotalsTooltip
 			Widgets.ThingIcon(iconRect, count.ThingDef);
 			Rect labelRect = new Rect(rowRect.x + listElementsHeight, rowRect.y, rowRect.width - listElementsHeight, rowRect.height);
 			Text.Anchor = TextAnchor.MiddleLeft;
-			int difference = (countStorage) ? Find.CurrentMap.GetCountInStorageDifference(count) : Find.CurrentMap.GetCountOnMapDifference(count, countForbiddenItems);
+			int difference = (modInstance.CountInStorage) ? Find.CurrentMap.GetCountInStorageDifference(count) : Find.CurrentMap.GetCountOnMapDifference(count, modInstance.CountForbidden);
 			if (difference > 0) GUI.color = Color.red;
 			Widgets.Label(labelRect, count.Count.ToString());
 			GUI.color = Color.white;
 			Text.Anchor = TextAnchor.UpperLeft;
-			if (tooltipsEnabled) DoRowTooltip(rowRect, count, difference);
+			if (modInstance.ShowRowToolTips) DoRowTooltip(rowRect, count, difference);
 		}
 
 		private void DoRowTooltip(Rect tooltipRegion, ThingDefCount count, int difference)
 		{
 			int present = -difference + count.Count;
 			object[] translateArgs = new object[] { count.Count, present };
-			string tipLabel = (countStorage) ? "ReqRowTip_Storage".Translate(translateArgs) : "ReqRowTip_All".Translate(translateArgs);
+			string tipLabel = (modInstance.CountInStorage) ? "ReqRowTip_Storage".Translate(translateArgs) : "ReqRowTip_All".Translate(translateArgs);
 			TooltipHandler.TipRegion(tooltipRegion, new TipSignal(tipLabel));
 		}
 	}
