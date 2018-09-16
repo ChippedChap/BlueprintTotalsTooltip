@@ -47,6 +47,7 @@ namespace BlueprintTotalsTooltip
 			PlaySettingsChangeDetector.RegisterMethod(OnPlaySettingChange);
 			LTAddNotifier.RegisterMethod(OnThingAdded);
 			LTRemoveNotifier.RegisterMethod(OnThingRemove);
+			FrameWorkedOnDetector.RegisterMethod(Tracker.FrameBeingBuilt);
 			cameraChangeDetector = new CameraChangeDetector();
 			cameraChangeDetector.RegisterMethod(OnCameraChange);
 		}
@@ -126,9 +127,9 @@ namespace BlueprintTotalsTooltip
 			if (Find.CurrentMap != null && !WorldRendererUtility.WorldRenderedNow)
 			{
 				cameraChangeDetector.OnGUI();
-				if (Tracker.NumberTracked > 0 && shouldDraw)
+				if (shouldDraw && Tracker.NumberTracked > 0)
 				{
-					if (highlightEnabled) Tracker.HighlightTracked(highlightRect, highlightMargin);
+					if (highlightEnabled && Find.Selector.NumSelected == 0) Tracker.HighlightTracked(highlightRect, highlightMargin);
 					DrawToolTip();
 				}
 			}
@@ -136,24 +137,26 @@ namespace BlueprintTotalsTooltip
 
 		private void DrawToolTip()
 		{
-			List<ThingDefCount> trackedRequirements = Tracker.GetTrackedTotals();
-			if (trackedRequirements.Count > 0)
+			List<ThingDefCount> trackedRequirements = Tracker.TotalCosts;
+			float maxCountWidth = (trackedRequirements.Count > 0) ? Text.CalcSize(trackedRequirements[0].Count.ToString()).x : 0f;
+			float workLeftWidth = Text.CalcSize(Tracker.WorkLeft.ToString()).x;
+			float toolTipWidth = Mathf.Max(maxCountWidth, workLeftWidth);
+			toolTipWidth += (listElementsMargin * 2 + xOffsetFromContainer * 2) + listElementsHeight;
+			float toolTipHeight = (trackedRequirements.Count) * listElementsHeight;
+			toolTipHeight += listElementsMargin * 2;
+			Rect tooltipRect = new Rect(0f, 0f, toolTipWidth, toolTipHeight);
+			PositionTipRect(ref tooltipRect);
+			if (modInstance.ClampTipToScreen)
 			{
-				float toolTipWidth = Text.CalcSize(trackedRequirements[0].Count.ToString()).x + listElementsHeight;
-				toolTipWidth += (listElementsMargin * 2 + xOffsetFromContainer * 2);
-				float toolTipHeight = (trackedRequirements.Count) * listElementsHeight;
-				toolTipHeight += listElementsMargin * 2;
-				Rect tooltipRect = new Rect(0f, 0f, toolTipWidth, toolTipHeight);
-				PositionTipRect(ref tooltipRect);
-				if (modInstance.ClampTipToScreen)
-					tooltipRect = tooltipRect.ClampRectInRect(new Rect(0, 0, UI.screenWidth, UI.screenHeight).ContractedBy(modInstance.TooltipClampMargin));
-				Rect innerTipRect = tooltipRect.ContractedBy(listElementsMargin).WidthContractedBy(xOffsetFromContainer);
-				for (int i = 0; i < trackedRequirements.Count; i++)
-				{
-					ThingDefCount count = trackedRequirements[i];
-					DrawRequirementRow(count, innerTipRect, i);
-				}
+				tooltipRect = tooltipRect.ClampRectInRect(new Rect(0, 0, UI.screenWidth, UI.screenHeight).ContractedBy(modInstance.TooltipClampMargin));
 			}
+			Rect innerTipRect = tooltipRect.ContractedBy(listElementsMargin).WidthContractedBy(xOffsetFromContainer);
+			for (int i = 0; i < trackedRequirements.Count; i++)
+			{
+				ThingDefCount count = trackedRequirements[i];
+				DrawRequirementRow(count, innerTipRect, i);
+			}
+			DrawWorkLeftRow(innerTipRect, trackedRequirements.Count);
 		}
 
 		private void PositionTipRect(ref Rect tooltipRect)
@@ -177,6 +180,17 @@ namespace BlueprintTotalsTooltip
 			GUI.color = Color.white;
 			Text.Anchor = TextAnchor.UpperLeft;
 			if (modInstance.ShowRowToolTips) DoRowTooltip(rowRect, count, difference);
+		}
+
+		private void DrawWorkLeftRow(Rect toolTipRect, int posInList)
+		{
+			Rect rowRect = new Rect(toolTipRect.x, toolTipRect.y + posInList * listElementsHeight, toolTipRect.width, listElementsHeight);
+			Rect iconRect = new Rect(rowRect.x, rowRect.y, listElementsHeight, listElementsHeight).ContractedBy(1.5f);
+			GUI.DrawTexture(iconRect, AssetLoader.workLeftTexture);
+			Rect labelRect = new Rect(rowRect.x + listElementsHeight, rowRect.y, rowRect.width - listElementsHeight, rowRect.height);
+			Text.Anchor = TextAnchor.MiddleLeft;
+			Widgets.Label(labelRect, Tracker.WorkLeft.ToString());
+			Text.Anchor = TextAnchor.UpperLeft;
 		}
 
 		private void DoRowTooltip(Rect tooltipRegion, ThingDefCount count, int difference)

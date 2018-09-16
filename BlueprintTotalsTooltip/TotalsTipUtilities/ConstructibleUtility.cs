@@ -3,6 +3,7 @@ using System.Linq;
 using RimWorld;
 using Verse;
 using HugsLib;
+using UnityEngine;
 
 namespace BlueprintTotalsTooltip.TotalsTipUtilities
 {
@@ -44,6 +45,16 @@ namespace BlueprintTotalsTooltip.TotalsTipUtilities
 		{
 			if (count.ThingDef.IsBlueprint) return 0;
 			return count.Count - map.resourceCounter.GetCount(count.ThingDef);
+		}
+
+		public static int GetWorkAmount(this Blueprint_Build blueprint)
+		{
+			return Mathf.CeilToInt(blueprint.def.entityDefToBuild.GetStatValueAbstract(StatDefOf.WorkToBuild, blueprint.stuffToUse)/60f);
+		}
+
+		public static int GetWorkAmount(this Frame frame)
+		{
+			return Mathf.CeilToInt(frame.WorkLeft/60f);
 		}
 	}
 }

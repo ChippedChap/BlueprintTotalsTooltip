@@ -8,6 +8,7 @@ namespace BlueprintTotalsTooltip
 	static class AssetLoader
 	{
 		public static readonly Texture2D totalsTooltipToggleTexture = ContentFinder<Texture2D>.Get("ShowTotalsTooltip");
+		public static readonly Texture2D workLeftTexture = ContentFinder<Texture2D>.Get("UI/Buttons/AutoRebuild");
 		public static readonly List<Texture2D> highlightTextures = new List<Texture2D>();
 
 		private static readonly int highlightTexNum = 25;
