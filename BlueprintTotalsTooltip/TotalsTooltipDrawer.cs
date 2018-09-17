@@ -142,7 +142,7 @@ namespace BlueprintTotalsTooltip
 			float workLeftWidth = Text.CalcSize(Tracker.WorkLeft.ToString()).x;
 			float toolTipWidth = Mathf.Max(maxCountWidth, workLeftWidth);
 			toolTipWidth += (listElementsMargin * 2 + xOffsetFromContainer * 2) + listElementsHeight;
-			float toolTipHeight = (trackedRequirements.Count) * listElementsHeight;
+			float toolTipHeight = trackedRequirements.Count * listElementsHeight + listElementsHeight;
 			toolTipHeight += listElementsMargin * 2;
 			Rect tooltipRect = new Rect(0f, 0f, toolTipWidth, toolTipHeight);
 			PositionTipRect(ref tooltipRect);

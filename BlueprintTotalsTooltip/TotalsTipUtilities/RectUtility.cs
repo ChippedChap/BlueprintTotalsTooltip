@@ -77,5 +77,17 @@ namespace BlueprintTotalsTooltip.TotalsTipUtilities
 		{
 			return new Rect(original.x + xMargin, original.y, original.width - xMargin * 2, original.height);
 		}
+
+		public static void DrawBracketsAroundRect(Rect rectToDrawIn)
+		{
+			Texture2D bracketTexture = AssetLoader.bracketTexture;
+			GUI.DrawTexture(rectToDrawIn, bracketTexture);
+			Rect bottomRight = new Rect(rectToDrawIn.x + rectToDrawIn.width, rectToDrawIn.y, -rectToDrawIn.width, rectToDrawIn.height);
+			GUI.DrawTexture(bottomRight, bracketTexture);
+			Rect topLeft = new Rect(rectToDrawIn.x, rectToDrawIn.y + rectToDrawIn.height, rectToDrawIn.width, -rectToDrawIn.height);
+			GUI.DrawTexture(topLeft, bracketTexture);
+			Rect topRight = new Rect(bottomRight.x, topLeft.y, -rectToDrawIn.width, -rectToDrawIn.height);
+			GUI.DrawTexture(topRight, bracketTexture);
+		}
 	}
 }
