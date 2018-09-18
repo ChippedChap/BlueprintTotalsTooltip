@@ -9,6 +9,7 @@ namespace BlueprintTotalsTooltip
 	class ConstructibleTotalsTracker
 	{
 		#region settings
+		public bool trackForbidden;
 		public float visibleMargin;
 		#endregion settings
 
@@ -75,6 +76,7 @@ namespace BlueprintTotalsTooltip
 
 		public void ResolveSettings(TotalsTooltipMod mod)
 		{
+			trackForbidden = mod.TrackingForbidden;
 			visibleMargin = mod.VisibilityMargin;
 		}
 
@@ -121,6 +123,7 @@ namespace BlueprintTotalsTooltip
 			for (int i = 0; i < candidateThings.Count; i++)
 			{
 				Thing candidateThing = candidateThings[i];
+				if (ForbidUtility.IsForbidden(candidateThing, Faction.OfPlayer) && !trackForbidden) continue;
 				if (!candidateThing.ThingIsVisible(visibleMargin, out Vector3[] corners)) continue;
 				Track(candidateThing as IConstructible);
 				for (int j = 0; j < corners.Length; j++) crBuilder.ConsiderPoint(corners[j]);
@@ -145,8 +148,9 @@ namespace BlueprintTotalsTooltip
 			trackedConstructibles.Clear();
 			foreach (IConstructible constructible in lastConstructiblesTracked)
 			{
-				if (Find.Selector.SelectedObjects.Contains(constructible as IConstructible))
+				if (Find.Selector.SelectedObjects.Contains(constructible))
 				{
+					if (ForbidUtility.IsForbidden(constructible as Thing, Faction.OfPlayer) && !trackForbidden) continue;
 					Track(constructible);
 					Vector3[] corners = (constructible as Thing).CornerPositions();
 					for (int i = 0; i < corners.Length; i++) rectBuilder.ConsiderPoint(corners[i]);

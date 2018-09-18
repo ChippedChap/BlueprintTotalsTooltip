@@ -3,6 +3,9 @@
 	<trackingVisible_title>Track Visible Blueprints</trackingVisible_title>
 	<trackingVisible_desc>Option to enable or disable tracking of blueprints on the screen to display requirements.\n\nIf your computer is too slow to track visible blueprints, then you can disable that here.</trackingVisible_desc>
 	
+	<trackingForbidden_title>Track Forbidden Blueprints</trackingForbidden_title>
+	<trackingForbidden_desc>Option to enable or disable the tracking of forbidden blueprints. Use to exclude large amounts of blueprints for tracking.\n\nThis applies to both selection tracking and visibility tracking.</trackingForbidden_desc>
+	
 	<zoomForTracking_title>Zoom Level for Visibility Tracking</zoomForTracking_title>
 	<zoomForTracking_desc>The maximum zoom level when tracking blueprints visible on the screen.\n\nChoose a closer zoom level if your computer is having difficulties tracking too many blueprints.</zoomForTracking_desc>
 	<zoomForTracking_Closest>Closest</zoomForTracking_Closest>

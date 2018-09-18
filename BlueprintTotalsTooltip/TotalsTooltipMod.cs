@@ -10,6 +10,7 @@ namespace BlueprintTotalsTooltip
 	{
 		#region settings
 		public SettingHandle<bool> TrackingVisible { get; private set; }
+		public SettingHandle<bool> TrackingForbidden { get; private set; }
 		public SettingHandle<CameraZoomRange> ZoomForVisibleTracking { get; private set; }
 		public SettingHandle<int> VisibilityMargin { get; private set; }
 		public SettingHandle<bool> ClampTipToScreen { get; private set; }
@@ -44,6 +45,7 @@ namespace BlueprintTotalsTooltip
 		public override void DefsLoaded()
 		{
 			TrackingVisible = Settings.GetHandle("trackingVisible", "trackingVisible_title".Translate(), "trackingVisible_desc".Translate(), true);
+			TrackingForbidden = Settings.GetHandle("trackingForbidden", "trackingForbidden_title".Translate(), "trackingForbidden_desc".Translate(), false);
 			ZoomForVisibleTracking = Settings.GetHandle("zoomForTracking", "zoomForTracking_title".Translate(), "zoomForTracking_desc".Translate(),
 				CameraZoomRange.Middle, null, "zoomForTracking_");
 			VisibilityMargin = Settings.GetHandle("visibilityMargin", "visibilityMargin_title".Translate(), "visibilityMargin_desc".Translate(), 100,
