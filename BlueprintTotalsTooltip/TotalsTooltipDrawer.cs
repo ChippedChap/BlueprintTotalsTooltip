@@ -142,7 +142,7 @@ namespace BlueprintTotalsTooltip
 			float workLeftWidth = Text.CalcSize(Tracker.WorkLeft.ToString()).x;
 			float toolTipWidth = Mathf.Max(maxCountWidth, workLeftWidth);
 			toolTipWidth += (listElementsMargin * 2 + xOffsetFromContainer * 2) + listElementsHeight;
-			float toolTipHeight = trackedRequirements.Count * listElementsHeight + listElementsHeight;
+			float toolTipHeight = (trackedRequirements.Count + 1) * listElementsHeight;
 			toolTipHeight += listElementsMargin * 2;
 			Rect tooltipRect = new Rect(0f, 0f, toolTipWidth, toolTipHeight);
 			PositionTipRect(ref tooltipRect);
@@ -151,12 +151,18 @@ namespace BlueprintTotalsTooltip
 				tooltipRect = tooltipRect.ClampRectInRect(new Rect(0, 0, UI.screenWidth, UI.screenHeight).ContractedBy(modInstance.TooltipClampMargin));
 			}
 			Rect innerTipRect = tooltipRect.ContractedBy(listElementsMargin).WidthContractedBy(xOffsetFromContainer);
+			int indexOffset = 0;
+			if (Find.Selector.NumSelected > 0)
+			{
+				DrawTrackingModeIndicator(innerTipRect, indexOffset);
+				indexOffset = 1;
+			}
 			for (int i = 0; i < trackedRequirements.Count; i++)
 			{
 				ThingDefCount count = trackedRequirements[i];
-				DrawRequirementRow(count, innerTipRect, i);
+				DrawRequirementRow(count, innerTipRect, i + indexOffset);
 			}
-			DrawWorkLeftRow(innerTipRect, trackedRequirements.Count);
+			DrawWorkLeftRow(innerTipRect, trackedRequirements.Count + indexOffset);
 		}
 
 		private void PositionTipRect(ref Rect tooltipRect)
@@ -165,6 +171,13 @@ namespace BlueprintTotalsTooltip
 			float xPos = TipPosSettingsHandler.GetDimensionFromSetting(containingRect.xMin, containingRect.xMax, tooltipRect.width, xPosition);
 			float yPos = TipPosSettingsHandler.GetDimensionFromSetting(containingRect.yMin, containingRect.yMax, tooltipRect.height, yPosition);
 			tooltipRect.position = new Vector2(xPos, yPos);
+		}
+
+		private void DrawTrackingModeIndicator(Rect toolTipRect, int posInList)
+		{
+			Rect rowRect = new Rect(toolTipRect.x, toolTipRect.y + posInList * listElementsHeight, toolTipRect.width, listElementsHeight);
+			Rect iconRect = new Rect(rowRect.x, rowRect.y, listElementsHeight, listElementsHeight).ContractedBy(1.5f);
+			RectUtility.DrawBracketsAroundRect(iconRect);
 		}
 
 		private void DrawRequirementRow(ThingDefCount count, Rect toolTipRect, int posInList)
@@ -182,6 +195,14 @@ namespace BlueprintTotalsTooltip
 			if (modInstance.ShowRowToolTips) DoRowTooltip(rowRect, count, difference);
 		}
 
+		private void DoRowTooltip(Rect tooltipRegion, ThingDefCount count, int difference)
+		{
+			int present = -difference + count.Count;
+			object[] translateArgs = new object[] { count.Count, present };
+			string tipLabel = (modInstance.CountInStorage) ? "ReqRowTip_Storage".Translate(translateArgs) : "ReqRowTip_All".Translate(translateArgs);
+			TooltipHandler.TipRegion(tooltipRegion, new TipSignal(tipLabel));
+		}
+
 		private void DrawWorkLeftRow(Rect toolTipRect, int posInList)
 		{
 			Rect rowRect = new Rect(toolTipRect.x, toolTipRect.y + posInList * listElementsHeight, toolTipRect.width, listElementsHeight);
@@ -189,16 +210,16 @@ namespace BlueprintTotalsTooltip
 			GUI.DrawTexture(iconRect, AssetLoader.workLeftTexture);
 			Rect labelRect = new Rect(rowRect.x + listElementsHeight, rowRect.y, rowRect.width - listElementsHeight, rowRect.height);
 			Text.Anchor = TextAnchor.MiddleLeft;
-			Widgets.Label(labelRect, Tracker.WorkLeft.ToString());
+			string workLeftAsString = Tracker.WorkLeft.ToString();
+			Widgets.Label(labelRect, workLeftAsString);
+			DoWorkLeftTooltip(rowRect, workLeftAsString);
 			Text.Anchor = TextAnchor.UpperLeft;
 		}
 
-		private void DoRowTooltip(Rect tooltipRegion, ThingDefCount count, int difference)
+		private void DoWorkLeftTooltip(Rect tipRegion, string workLeftAsString)
 		{
-			int present = -difference + count.Count;
-			object[] translateArgs = new object[] { count.Count, present };
-			string tipLabel = (modInstance.CountInStorage) ? "ReqRowTip_Storage".Translate(translateArgs) : "ReqRowTip_All".Translate(translateArgs);
-			TooltipHandler.TipRegion(tooltipRegion, new TipSignal(tipLabel));
+			object[] translateArgs = new object[1] { workLeftAsString };
+			TooltipHandler.TipRegion(tipRegion, new TipSignal("WorkLeftTip".Translate(translateArgs)));
 		}
 	}
 }
