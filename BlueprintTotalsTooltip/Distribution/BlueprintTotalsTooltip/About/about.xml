@@ -10,7 +10,7 @@
 
 A UI mod that lets you seamlessly check how much your blueprints cost, even as you lay them down!
 
-The mod adds a tooltip that lists all the requirements of blueprints visible on the screen. The visible blueprints are highlighted with a white transparent rectangle to help you see which blueprints are having their costs added up. 
+The mod adds a tooltip that lists all the material costs and work left of blueprints visible on the screen. The visible blueprints are highlighted with a white transparent rectangle to help you see which blueprints are having their costs added up. 
 
 To enable the tooltip, check the icon that looks like a clipboard on the bottom right corner of the screen. The highlighting rectangle and the tooltip should appear. You can use and assign a key to toggle this setting quickly.
 
