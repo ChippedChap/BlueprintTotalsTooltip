@@ -14,13 +14,10 @@ namespace BlueprintTotalsTooltip
 {
 	class TotalsTooltipDrawer
 	{
-		#region player settings
 		private bool highlightEnabled;
-		private Texture2D highlightRect;
 
-		private RectDimensionPosition xPosition;
-		private RectDimensionPosition yPosition;
-		#endregion player settings
+		private RectDimensionPosition tipXPos;
+		private RectDimensionPosition tipYPos;
 
 		private readonly float highlightMargin = 5f;
 		private readonly float listElementsMargin = 3f;
@@ -54,10 +51,9 @@ namespace BlueprintTotalsTooltip
 
 		public void ResolveSettings()
 		{
-			highlightRect = AssetLoader.GetPreloadedTexOfOpacity(modInstance.HighlightOpacity);
 			highlightEnabled = modInstance.HighlightOpacity.Value != 0f;
-			xPosition = (RectDimensionPosition)modInstance.TipXPosition.Value;
-			yPosition = (RectDimensionPosition)modInstance.TipYPosition.Value;
+			tipXPos = (RectDimensionPosition)modInstance.TipXPosition.Value;
+			tipYPos = (RectDimensionPosition)modInstance.TipYPosition.Value;
 			Tracker.ResolveSettings(modInstance);
 			OnPlaySettingChange();
 		}
@@ -137,7 +133,7 @@ namespace BlueprintTotalsTooltip
 				cameraChangeDetector.OnGUI();
 				if (shouldDraw && Tracker.NumberTracked > 0)
 				{
-					if (highlightEnabled && Find.Selector.NumSelected == 0) Tracker.HighlightTracked(highlightRect, highlightMargin);
+					if (highlightEnabled && Find.Selector.NumSelected == 0) Tracker.HighlightTracked(modInstance.HighlightOpacity, highlightMargin);
 					DrawToolTip();
 				}
 			}
@@ -176,8 +172,8 @@ namespace BlueprintTotalsTooltip
 		private void PositionTipRect(ref Rect tooltipRect)
 		{
 			Rect containingRect = Tracker.ContainingRect;
-			float xPos = TipPosSettingsHandler.GetDimensionFromSetting(containingRect.xMin, containingRect.xMax, tooltipRect.width, xPosition);
-			float yPos = TipPosSettingsHandler.GetDimensionFromSetting(containingRect.yMin, containingRect.yMax, tooltipRect.height, yPosition);
+			float xPos = TipPosSettingsHandler.GetDimensionFromSetting(containingRect.xMin, containingRect.xMax, tooltipRect.width, tipXPos);
+			float yPos = TipPosSettingsHandler.GetDimensionFromSetting(containingRect.yMin, containingRect.yMax, tooltipRect.height, tipYPos);
 			tooltipRect.position = new Vector2(xPos, yPos);
 		}
 

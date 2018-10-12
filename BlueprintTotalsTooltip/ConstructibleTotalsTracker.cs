@@ -8,18 +8,14 @@ namespace BlueprintTotalsTooltip
 {
 	class ConstructibleTotalsTracker
 	{
-		#region settings
 		public bool trackForbidden;
 		public float visibleMargin;
-		#endregion settings
 
 		private HashSet<IConstructible> trackedConstructibles = new HashSet<IConstructible>();
 		private List<ThingDefCount> cachedCosts;
 		private bool cacheUpdated = false;
 
 		private Dictionary<Frame, int> cachedWorkLeftForFrames = new Dictionary<Frame, int>();
-		private int cachedWorkLeft = 0;
-
 		private CellRect containingRect = CellRect.Empty;
 		private Rect highlightRect = Rect.zero;
 
@@ -40,10 +36,7 @@ namespace BlueprintTotalsTooltip
 			}
 		}
 
-		public int WorkLeft
-		{
-			get { return cachedWorkLeft; }
-		}
+		public int WorkLeft { get; private set; } = 0;
 
 		public List<ThingDefCount> TotalCosts
 		{
@@ -118,7 +111,7 @@ namespace BlueprintTotalsTooltip
 			List<Thing> candidateThings = Find.CurrentMap.listerThings.ThingsInGroup(ThingRequestGroup.Construction);
 			trackedConstructibles.Clear();
 			cachedWorkLeftForFrames.Clear();
-			cachedWorkLeft = 0;
+			WorkLeft = 0;
 			CellRectBuilder crBuilder = new CellRectBuilder();
 			for (int i = 0; i < candidateThings.Count; i++)
 			{
@@ -135,7 +128,7 @@ namespace BlueprintTotalsTooltip
 		public void TrackSelectedConstructibles()
 		{
 			cachedWorkLeftForFrames.Clear();
-			cachedWorkLeft = 0;
+			WorkLeft = 0;
 			foreach (object selected in Find.Selector.SelectedObjects)
 			{
 				if (selected is IConstructible asIConstructible && !trackedConstructibles.Contains(selected as IConstructible))
@@ -163,11 +156,11 @@ namespace BlueprintTotalsTooltip
 
 		public void FrameBeingBuilt(Frame frame)
 		{
-			if (cachedWorkLeftForFrames.ContainsKey(frame)) cachedWorkLeft = (cachedWorkLeft - cachedWorkLeftForFrames[frame]) + frame.GetWorkAmount();
+			if (cachedWorkLeftForFrames.ContainsKey(frame)) WorkLeft = (WorkLeft - cachedWorkLeftForFrames[frame]) + frame.GetWorkAmount();
 			cachedWorkLeftForFrames[frame] = frame.GetWorkAmount();
 		}
 
-		public void HighlightTracked(Texture2D highlightTex, float margin)
+		public void HighlightTracked(float alpha, float margin)
 		{
 			if (!highlightRect.CloseEnoughTo(ContainingRect, 0.1f))
 			{
@@ -176,7 +169,7 @@ namespace BlueprintTotalsTooltip
 					Mathf.Lerp(highlightRect.xMax, ContainingRect.xMax, 0.5f),
 					Mathf.Lerp(highlightRect.yMax, ContainingRect.yMax, 0.5f));
 			}
-			GUI.DrawTexture(highlightRect.ExpandedBy(margin), highlightTex);
+			Widgets.DrawBoxSolid(highlightRect.ExpandedBy(margin), new Color(1f, 1f, 1f, alpha));
 		}
 
 		public void DebugDraw()
@@ -193,11 +186,11 @@ namespace BlueprintTotalsTooltip
 				trackedConstructibles.Add(constructible);
 				if (constructible is Blueprint_Build asBlueprint)
 				{
-					cachedWorkLeft += asBlueprint.GetWorkAmount();
+					WorkLeft += asBlueprint.GetWorkAmount();
 				}
 				if (constructible is Frame asFrame)
 				{
-					cachedWorkLeft += asFrame.GetWorkAmount();
+					WorkLeft += asFrame.GetWorkAmount();
 					cachedWorkLeftForFrames[asFrame] = asFrame.GetWorkAmount();
 				}
 			}
@@ -210,13 +203,13 @@ namespace BlueprintTotalsTooltip
 				trackedConstructibles.Remove(constructible);
 				if (constructible is Blueprint_Build asBlueprint)
 				{
-					cachedWorkLeft -= asBlueprint.GetWorkAmount();
+					WorkLeft -= asBlueprint.GetWorkAmount();
 				}
 				if (constructible is Frame asFrame)
 				{
 					if (cachedWorkLeftForFrames.ContainsKey(asFrame))
 					{
-						cachedWorkLeft -= asFrame.GetWorkAmount();
+						WorkLeft -= asFrame.GetWorkAmount();
 						cachedWorkLeftForFrames.Remove(asFrame);
 					}
 					else
