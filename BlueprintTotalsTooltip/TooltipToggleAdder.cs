@@ -16,7 +16,7 @@ namespace BlueprintTotalsTooltip
 		static void Postfix(WidgetRow row, bool worldView)
 		{
 			if (worldView || row == null) return;
-			row.ToggleableIcon(ref TotalsTooltipDrawer.shouldDraw, AssetLoader.totalsTooltipToggleTexture, "ShowTotalsTooltipTip".Translate(new object[] { toggleTipDraw.MainKeyLabel }), SoundDefOf.Mouseover_ButtonToggle);
+			row.ToggleableIcon(ref TotalsTooltipDrawer.shouldDraw, AssetLoader.totalsTooltipToggleTexture, "ShowTotalsTooltipTip".Translate(toggleTipDraw.MainKeyLabel), SoundDefOf.Mouseover_ButtonToggle);
 			CheckDrawSettingToggle();
 		}
 

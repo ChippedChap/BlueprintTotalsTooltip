@@ -97,9 +97,13 @@ namespace BlueprintTotalsTooltip
 				if (Find.Selector.NumSelected == 0)
 				{
 					if (ZoomIsValid)
+					{
 						Tracker.TrackVisibleConstructibles();
+					}
 					else if (zoomWasValid)
+					{
 						Tracker.ClearTracked();
+					}
 				}
 				zoomWasValid = ZoomIsValid;
 			}
@@ -117,8 +121,12 @@ namespace BlueprintTotalsTooltip
 		public void OnThingRemove(Thing thing)
 		{
 			if (Find.Selector.NumSelected == 0 && modInstance.TrackingVisible && shouldDraw && !WorldRendererUtility.WorldRenderedNow)
+			{
 				if (thing is IConstructible)
+				{
 					Tracker.TryUntrackConstructible(thing);
+				}
+			}
 		}
 		#endregion callbacks
 
@@ -198,8 +206,7 @@ namespace BlueprintTotalsTooltip
 		private void DoRowTooltip(Rect tooltipRegion, ThingDefCount count, int difference)
 		{
 			int present = -difference + count.Count;
-			object[] translateArgs = new object[] { count.Count, present };
-			string tipLabel = (modInstance.CountInStorage) ? "ReqRowTip_Storage".Translate(translateArgs) : "ReqRowTip_All".Translate(translateArgs);
+			string tipLabel = (modInstance.CountInStorage) ? "ReqRowTip_Storage".Translate(count.Count, present) : "ReqRowTip_All".Translate(count.Count, present);
 			TooltipHandler.TipRegion(tooltipRegion, new TipSignal(tipLabel));
 		}
 
@@ -218,8 +225,7 @@ namespace BlueprintTotalsTooltip
 
 		private void DoWorkLeftTooltip(Rect tipRegion, string workLeftAsString)
 		{
-			object[] translateArgs = new object[1] { workLeftAsString };
-			TooltipHandler.TipRegion(tipRegion, new TipSignal("WorkLeftTip".Translate(translateArgs)));
+			TooltipHandler.TipRegion(tipRegion, new TipSignal("WorkLeftTip".Translate(workLeftAsString)));
 		}
 	}
 }
