@@ -4,11 +4,13 @@
 	<name>Blueprint Totals Tooltip</name>
 	<author>ChippedChap</author>
 	<targetVersion>1.0.0</targetVersion>
-	<description>Version 1.1.4
+	<description>Version 1.1.5
 
 &lt;b&gt;Note:&lt;/b&gt; This mod requires HugsLib.
 
 A UI mod that lets you seamlessly check how much your blueprints cost, even as you lay them down!
+
+&lt;b&gt;Many thanks to Proxyer for providing the Japanese translation for this mod!&lt;/b&gt;
 
 The mod adds a tooltip that lists all the material costs and work left of blueprints visible on the screen. The visible blueprints are highlighted with a white transparent rectangle to help you see which blueprints are having their costs added up. 
 

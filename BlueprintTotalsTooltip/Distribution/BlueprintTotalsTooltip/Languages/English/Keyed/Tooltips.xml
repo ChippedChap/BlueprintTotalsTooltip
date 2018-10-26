@@ -5,5 +5,5 @@
 	
 	<WorkLeftTip>{0} work left.</WorkLeftTip>
 	
-	<ShowTotalsTooltipTip>Show or hide the totals tooltip.\n\nPress the {0} key to toggle this setting.</ShowTotalsTooltipTip>
+	<ShowTotalsTooltipTip>Toggle the totals tooltip.\n\nPress the {0} key to toggle this setting.</ShowTotalsTooltipTip>
 </LanguageData>
