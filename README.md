@@ -5,7 +5,7 @@ Requires HugsLib. [Get it here.](https://github.com/UnlimitedHugs/RimworldHugsLi
 
 See further details in Rimworld's mod menu.
 
-[Steam Workshop Page](https://steamcommunity.com/sharedfiles/filedetails/?id=1506730135)
+[Steam Workshop Page](https://steamcommunity.com/sharedfiles/filedetails/?id=1537871656)
 
 [Forum Thread](https://ludeon.com/forums/index.php?topic=43565.0)
 
