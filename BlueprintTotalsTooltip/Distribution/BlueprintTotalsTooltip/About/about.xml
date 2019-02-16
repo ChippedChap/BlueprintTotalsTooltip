@@ -3,10 +3,8 @@
 <ModMetaData>
 	<name>Blueprint Totals Tooltip</name>
 	<author>ChippedChap</author>
-	<targetVersion>1.0.0</targetVersion>
-	<description>Version 1.1.5
-
-&lt;b&gt;Note:&lt;/b&gt; This mod requires HugsLib.
+	<supportedVersions><li>1.0</li></supportedVersions>
+	<description>&lt;b&gt;Note:&lt;/b&gt; This mod requires HugsLib.
 
 A UI mod that lets you seamlessly check how much your blueprints cost, even as you lay them down!
 
