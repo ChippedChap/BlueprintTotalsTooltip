@@ -1,5 +1,5 @@
 ﻿using RimWorld;
-using Harmony;
+using HarmonyLib;
 
 namespace BlueprintTotalsTooltip.SelectorChangeNotifiers
 {

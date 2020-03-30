@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BlueprintTotalsTooltip</RootNamespace>
     <AssemblyName>BlueprintTotalsTooltip</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -28,39 +30,11 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>LocalDev\Refs\0Harmony.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>LocalDev\Refs\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>LocalDev\Refs\Assembly-CSharp-firstpass.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="HugsLib">
-      <HintPath>LocalDev\Refs\HugsLib.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="UnityEngine">
-      <HintPath>LocalDev\Refs\UnityEngine.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>LocalDev\Refs\UnityEngine.UI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-  </ItemGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="BlueprintSelectionTransferer.cs" />
     <Compile Include="ChangeDetection\FrameWorkedOnDetector.cs" />
@@ -87,7 +61,32 @@
     <Compile Include="AssetLoader.cs" />
     <Compile Include="TotalsTooltipDrawer.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>LocalDev\Refs\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>LocalDev\Refs\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HugsLib">
+      <HintPath>LocalDev\Refs\HugsLib.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="UnityEngine">
+      <HintPath>LocalDev\Refs\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>LocalDev\Refs\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>LocalDev\Refs\UnityEngine.IMGUIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>LocalDev\Refs\UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>@echo $(Targetname)
@@ -101,15 +100,9 @@ set /p RIM_DIR=&lt;"$(ProjectDir)LocalDev\rim_dir.txt"
 set /p ZA_DIR=&lt;"$(ProjectDir)LocalDev\7za_dir.txt"
 set /p DIST_DIR=&lt;"$(ProjectDir)LocalDev\dist_dir.txt"
 
-@echo Copying RimWorld assemblies from "%25RIM_DIR%25\RimWorldWin_Data\Managed" to "$(ProjectDir)LocalDev\Refs" folder...
-copy /Y "%25RIM_DIR%25\RimWorldWin64_Data\Managed\Assembly-CSharp.dll" "$(ProjectDir)LocalDev\Refs"
-copy /Y "%25RIM_DIR%25\RimWorldWin64_Data\Managed\Assembly-CSharp-firstpass.dll" "$(ProjectDir)LocalDev\Refs"
-copy /Y "%25RIM_DIR%25\RimWorldWin64_Data\Managed\UnityEngine.dll" "$(ProjectDir)LocalDev\Refs"
-copy /Y "%25RIM_DIR%25\RimWorldWin64_Data\Managed\UnityEngine.UI.dll" "$(ProjectDir)LocalDev\Refs"
-
 if %25UsingHarmony%25 EQU true (
-@echo Copying Harmony assembly from "%25RIM_DIR%25\Mods\HugsLib\Assemblies" to "$(ProjectDir)LocalDev\Refs"  folder...
-copy /Y "%25RIM_DIR%25\Mods\HugsLib\Assemblies\0Harmony.dll" "$(ProjectDir)LocalDev\Refs"
+@echo Copying Harmony assembly from "%25RIM_DIR%25\Mods\Harmony\v1.1\Assemblies\0Harmony.dll" to "$(ProjectDir)LocalDev\Refs"  folder...
+copy /Y "%25RIM_DIR%25\Mods\Harmony\v1.1\Assemblies\0Harmony.dll" "$(ProjectDir)LocalDev\Refs"
 )
 if %25UsingHugsLib%25 EQU true (
 @echo Copying HugsLib assembly from "%25RIM_DIR%25\Mods\HugsLib\Assemblies" to "$(ProjectDir)LocalDev\Refs"  folder...
@@ -121,7 +114,6 @@ copy /Y "%25RIM_DIR%25\Mods\HugsLib\Assemblies\HugsLib.dll" "$(ProjectDir)LocalD
   <PropertyGroup>
     <PostBuildEvent>@echo $(Targetname)
 SET ModName=BlueprintTotalsTooltip
-SET UsingHarmony=true
 SET UseChecker=true
 @echo ...
 @echo set lpath vars from LocalDev storage...
@@ -134,10 +126,6 @@ del /q "$(ProjectDir)Distribution\%25ModName%25\Assemblies\*"
 @echo Copying assemblies to Distribution $(Targetname) files...
 if not exist "$(ProjectDir)Distribution\%25ModName%25\Assemblies" mkdir "$(ProjectDir)Distribution\%25ModName%25\Assemblies"
 copy /Y "$(TargetDir)"%25ModName%25*.dll "$(ProjectDir)Distribution\%25ModName%25\Assemblies"
-@echo Copying Harmony assembly to Distribution $(Targetname) files...
-if %25UsingHarmony%25 EQU true (
-copy /Y "$(ProjectDir)LocalDev\Refs\"0Harmony.dll "$(ProjectDir)Distribution\%25ModName%25\Assemblies"
-)
 if %25UseChecker%25 EQU true (
 copy /Y "$(ProjectDir)LocalDev\Refs\"$HugsLibChecker.dll "$(ProjectDir)Distribution\%25ModName%25\Assemblies"
 )

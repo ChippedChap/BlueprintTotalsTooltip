@@ -338,3 +338,6 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+BlueprintTotalsTooltip/LocalDev/Refs/UnityEngine.CoreModule.dll
+BlueprintTotalsTooltip/LocalDev/Refs/UnityEngine.IMGUIModule.dll
+BlueprintTotalsTooltip/LocalDev/Refs/UnityEngine.TextRenderingModule.dll
