@@ -4,7 +4,7 @@ using RimWorld;
 
 namespace BlueprintTotalsTooltip.FrameChangeNotifiers
 {
-	[HarmonyPatch(typeof(ThingOwner<Thing>))]
+	[HarmonyPatch(typeof(ThingOwner))]
 	[HarmonyPatch("NotifyAdded")]
 	class FrameAddNotifier
 	{

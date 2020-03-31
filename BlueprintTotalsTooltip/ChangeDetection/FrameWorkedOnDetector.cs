@@ -15,9 +15,9 @@ namespace BlueprintTotalsTooltip.ChangeDetection
 
 		static MethodBase TargetMethod()
 		{
-			Type iteratorType = AccessTools.Inner(typeof(JobDriver_ConstructFinishFrame), "<MakeNewToils>c__Iterator0");
-			Type anonstoreyType = AccessTools.Inner(iteratorType, "<MakeNewToils>c__AnonStorey1");
-			return AccessTools.Method(anonstoreyType, "<>m__1");
+			// This is intended to point to the delegate build.tickAction is set to in MakeNewToils()
+			Type innerClass = AccessTools.Inner(typeof(JobDriver_ConstructFinishFrame), "<>c__DisplayClass4_0");
+			return AccessTools.Method(innerClass, "<MakeNewToils>b__1");
 		}
 
 		static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
