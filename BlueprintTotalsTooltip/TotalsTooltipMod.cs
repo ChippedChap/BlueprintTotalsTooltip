@@ -1,8 +1,10 @@
 ﻿using BlueprintTotalsTooltip.TotalsTipSettingsUtilities;
 using HugsLib;
 using HugsLib.Settings;
+using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.Sound;
 
 namespace BlueprintTotalsTooltip
 {
@@ -22,9 +24,12 @@ namespace BlueprintTotalsTooltip
 		public SettingHandle<int> TipXPosition { get; private set; }
 		public SettingHandle<int> TipYPosition { get; private set; }
 		public SettingHandle<bool> TransferSelection { get; private set; }
+		public static SettingHandle<bool> ShouldDrawTooltip { get; private set; }
 		#endregion settings
 
 		public TotalsTooltipDrawer TotalsTipDrawer { get; }
+
+		public static readonly KeyBindingDef toggleTipDraw = DefDatabase<KeyBindingDef>.GetNamed("ToggleTracking");
 
 		public override string ModIdentifier
 		{
@@ -62,13 +67,29 @@ namespace BlueprintTotalsTooltip
 			CountForbidden = Settings.GetHandle("countForbidden", "countForbidden_title".Translate(), "countForbidden_desc".Translate(), false);
 			ResolveTipPositionHandlers();
 			TransferSelection = Settings.GetHandle("transferSel", "transferSel_title".Translate(), "transferSel_desc".Translate(), true);
+			ShouldDrawTooltip = Settings.GetHandle("shouldDrawTooltip", "", "", false);
+			ShouldDrawTooltip.NeverVisible = true;
 			BlueprintSelectionTransferer.transferring = TransferSelection;
 			TotalsTipDrawer.ResolveSettings();
 		}
 
 		public override void OnGUI()
 		{
+			CheckDrawSettingToggle();
 			TotalsTipDrawer.OnGUI();
+		}
+
+		private void CheckDrawSettingToggle()
+		{
+			if (toggleTipDraw.KeyDownEvent)
+			{
+				ShouldDrawTooltip.Value = !ShouldDrawTooltip.Value;
+				TooltipToggleAdder.NotifyPlaySettingToggled();
+				if (ShouldDrawTooltip.Value)
+					SoundDefOf.Checkbox_TurnedOn.PlayOneShotOnCamera(null);
+				else
+					SoundDefOf.Checkbox_TurnedOff.PlayOneShotOnCamera(null);
+			}
 		}
 
 		private void ResolveTipPositionHandlers()
