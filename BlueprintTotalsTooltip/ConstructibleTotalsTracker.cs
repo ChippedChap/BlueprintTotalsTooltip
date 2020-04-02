@@ -156,7 +156,8 @@ namespace BlueprintTotalsTooltip
 
 		public void FrameBeingBuilt(Frame frame)
 		{
-			if (cachedWorkLeftForFrames.ContainsKey(frame)) WorkLeft = (WorkLeft - cachedWorkLeftForFrames[frame]) + frame.GetWorkAmount();
+			if (!cachedWorkLeftForFrames.ContainsKey(frame)) return;
+			WorkLeft = (WorkLeft - cachedWorkLeftForFrames[frame]) + frame.GetWorkAmount();
 			cachedWorkLeftForFrames[frame] = frame.GetWorkAmount();
 		}
 

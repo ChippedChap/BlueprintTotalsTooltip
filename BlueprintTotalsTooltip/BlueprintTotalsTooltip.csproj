@@ -37,7 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BlueprintSelectionTransferer.cs" />
-    <Compile Include="ChangeDetection\FrameWorkedOnDetector.cs" />
+    <Compile Include="FrameChangeNotifiers\FrameWorkedOnDetector.cs" />
     <Compile Include="ConstructibleTotalsTracker.cs" />
     <Compile Include="FrameChangeNotifiers\FrameAddNotifier.cs" />
     <Compile Include="FrameChangeNotifiers\FrameChangeNotifierData.cs" />

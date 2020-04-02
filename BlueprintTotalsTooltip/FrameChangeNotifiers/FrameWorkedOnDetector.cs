@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using Verse;
 
-namespace BlueprintTotalsTooltip.ChangeDetection
+namespace BlueprintTotalsTooltip.FrameChangeNotifiers
 {
 	[HarmonyPatch]
 	static class FrameWorkedOnDetector
