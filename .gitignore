@@ -2,11 +2,6 @@
 7za_dir.txt
 dist_dir.txt
 rim_dir.txt
-Assembly-CSharp.dll
-Assembly-CSharp-firstpass.dll
-HugsLib.dll
-UnityEngine.dll
-UnityEngine.UI.dll
 
 ## Rimworld ignores
 **/LocalDev/Refs/*
