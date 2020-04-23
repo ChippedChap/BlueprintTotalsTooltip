@@ -27,7 +27,7 @@ namespace BlueprintTotalsTooltip
 			{
 				if (containingRect.Equals(CellRect.Empty))
 				{
-					if (Find.Selector.NumSelected == 0)
+					if (TotalsTooltipDrawer.NoConstructablesSelected)
 						TrackVisibleConstructibles();
 					else
 						TrackSelectedConstructibles();

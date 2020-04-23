@@ -34,6 +34,8 @@ namespace BlueprintTotalsTooltip
 
 		public ConstructibleTotalsTracker Tracker { get; }
 
+		public static bool NoConstructablesSelected => !Find.Selector.SelectedObjects.Any(x => x is IConstructible);
+
 		public TotalsTooltipDrawer(TotalsTooltipMod mod)
 		{
 			modInstance = mod;
@@ -61,7 +63,7 @@ namespace BlueprintTotalsTooltip
 		{
 			if (TotalsTooltipMod.ShouldDrawTooltip && !WorldRendererUtility.WorldRenderedNow)
 			{
-				if (Find.Selector.NumSelected == 0 && ZoomIsValid && modInstance.TrackingVisible)
+				if (NoConstructablesSelected && ZoomIsValid && modInstance.TrackingVisible)
 				{
 					Tracker.TrackVisibleConstructibles();
 				}
@@ -77,7 +79,7 @@ namespace BlueprintTotalsTooltip
 		{
 			if (TotalsTooltipMod.ShouldDrawTooltip && !WorldRendererUtility.WorldRenderedNow)
 			{
-				if (Find.Selector.NumSelected == 0 && modInstance.TrackingVisible)
+				if (NoConstructablesSelected && modInstance.TrackingVisible)
 					Tracker.TrackVisibleConstructibles();
 				else
 					Tracker.TrackSelectedConstructibles();
@@ -88,7 +90,7 @@ namespace BlueprintTotalsTooltip
 		{
 			if (TotalsTooltipMod.ShouldDrawTooltip && modInstance.TrackingVisible)
 			{
-				if (Find.Selector.NumSelected == 0)
+				if (NoConstructablesSelected)
 				{
 					if (ZoomIsValid)
 					{
@@ -105,7 +107,7 @@ namespace BlueprintTotalsTooltip
 
 		public void OnThingAdded(Thing thing)
 		{
-			if (Find.Selector.NumSelected == 0 && modInstance.TrackingVisible && TotalsTooltipMod.ShouldDrawTooltip && !WorldRendererUtility.WorldRenderedNow)
+			if (NoConstructablesSelected && modInstance.TrackingVisible && TotalsTooltipMod.ShouldDrawTooltip && !WorldRendererUtility.WorldRenderedNow)
 				if (thing is IConstructible)
 				{
 					Tracker.TryTrackConstructible(thing);
@@ -114,7 +116,7 @@ namespace BlueprintTotalsTooltip
 
 		public void OnThingRemove(Thing thing)
 		{
-			if (Find.Selector.NumSelected == 0 && modInstance.TrackingVisible && TotalsTooltipMod.ShouldDrawTooltip && !WorldRendererUtility.WorldRenderedNow)
+			if (NoConstructablesSelected && modInstance.TrackingVisible && TotalsTooltipMod.ShouldDrawTooltip && !WorldRendererUtility.WorldRenderedNow)
 			{
 				if (thing is IConstructible)
 				{
@@ -131,7 +133,7 @@ namespace BlueprintTotalsTooltip
 				cameraChangeDetector.OnGUI();
 				if (TotalsTooltipMod.ShouldDrawTooltip && Tracker.NumberTracked > 0)
 				{
-					if (highlightEnabled && Find.Selector.NumSelected == 0) Tracker.HighlightTracked(modInstance.HighlightOpacity, highlightMargin);
+					if (highlightEnabled && NoConstructablesSelected) Tracker.HighlightTracked(modInstance.HighlightOpacity, highlightMargin);
 					DrawToolTip();
 				}
 			}
@@ -154,7 +156,7 @@ namespace BlueprintTotalsTooltip
 			}
 			Rect innerTipRect = tooltipRect.ContractedBy(listElementsMargin).WidthContractedBy(xOffsetFromContainer);
 			int indexOffset = 0;
-			if (Find.Selector.NumSelected > 0)
+			if (!NoConstructablesSelected)
 			{
 				DrawTrackingModeIndicator(innerTipRect, indexOffset);
 				indexOffset = 1;
