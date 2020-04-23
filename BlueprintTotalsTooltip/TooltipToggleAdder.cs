@@ -3,7 +3,7 @@ using RimWorld;
 using Verse;
 using Verse.Sound;
 using UnityEngine;
-using BlueprintTotalsTooltip.ChangeDetection;
+using BlueprintTotalsTooltip.CameraChangeDetection;
 using System.Collections.Generic;
 using System;
 

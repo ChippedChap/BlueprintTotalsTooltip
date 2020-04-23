@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using Verse;
 
-namespace BlueprintTotalsTooltip.ChangeDetection
+namespace BlueprintTotalsTooltip.CameraChangeDetection
 {
 	class CameraChangeDetector
 	{

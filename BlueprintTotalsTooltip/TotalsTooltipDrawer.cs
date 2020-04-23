@@ -1,5 +1,5 @@
 ﻿using BlueprintTotalsTooltip.TotalsTipUtilities;
-using BlueprintTotalsTooltip.ChangeDetection;
+using BlueprintTotalsTooltip.CameraChangeDetection;
 using BlueprintTotalsTooltip.SelectorChangeNotifiers;
 using BlueprintTotalsTooltip.FrameChangeNotifiers;
 using BlueprintTotalsTooltip.LTChangeNotifiers;
