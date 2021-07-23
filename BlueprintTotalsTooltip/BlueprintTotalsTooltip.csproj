@@ -88,33 +88,13 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>@echo $(Targetname)
-SET ModName=BlueprintTotalsTooltip
-SET UsingHarmony=true
-SET UsingHugsLib=true
-
-@echo ...
-@echo set lpath vars from LocalDev storage...
-set /p RIM_DIR=&lt;"$(ProjectDir)LocalDev\rim_dir.txt"
-set /p ZA_DIR=&lt;"$(ProjectDir)LocalDev\7za_dir.txt"
-set /p DIST_DIR=&lt;"$(ProjectDir)LocalDev\dist_dir.txt"
-
-if %25UsingHarmony%25 EQU true (
-@echo Copying Harmony assembly from "%25RIM_DIR%25\Mods\Harmony\v1.1\Assemblies\0Harmony.dll" to "$(ProjectDir)LocalDev\Refs"  folder...
-copy /Y "%25RIM_DIR%25\Mods\Harmony\v1.1\Assemblies\0Harmony.dll" "$(ProjectDir)LocalDev\Refs"
-)
-if %25UsingHugsLib%25 EQU true (
-@echo Copying HugsLib assembly from "%25RIM_DIR%25\Mods\HugsLib\v1.1\Assemblies" to "$(ProjectDir)LocalDev\Refs"  folder...
-copy /Y "%25RIM_DIR%25\Mods\HugsLib\v1.1\Assemblies\HugsLib.dll" "$(ProjectDir)LocalDev\Refs"
-)
-
-@echo RimWorld API references copying complete!</PreBuildEvent>
+    <PreBuildEvent>@echo Reference copying is now manual!</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>@echo $(Targetname)
 SET ModName=BlueprintTotalsTooltip
 SET UseChecker=true
-SET Version=v1.1
+SET Version=v1.3
 
 @echo ...
 
