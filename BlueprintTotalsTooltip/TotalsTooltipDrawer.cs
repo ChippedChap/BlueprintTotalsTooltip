@@ -166,7 +166,10 @@ namespace BlueprintTotalsTooltip
 				ThingDefCount count = trackedRequirements[i];
 				DrawRequirementRow(count, innerTipRect, i + indexOffset);
 			}
-			DrawWorkLeftRow(innerTipRect, trackedRequirements.Count + indexOffset);
+			if (Tracker.WorkLeft != 0)
+			{
+				DrawWorkLeftRow(innerTipRect, trackedRequirements.Count + indexOffset);
+			}
 		}
 
 		private void PositionTipRect(ref Rect tooltipRect)
