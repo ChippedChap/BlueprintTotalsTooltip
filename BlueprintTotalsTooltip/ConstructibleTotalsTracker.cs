@@ -108,6 +108,7 @@ namespace BlueprintTotalsTooltip
 
 		public void TrackVisibleConstructibles()
 		{
+			if (Find.CurrentMap == null) return;
 			List<Thing> candidateThings = Find.CurrentMap.listerThings.ThingsInGroup(ThingRequestGroup.Construction);
 			trackedConstructibles.Clear();
 			cachedWorkLeftForFrames.Clear();
