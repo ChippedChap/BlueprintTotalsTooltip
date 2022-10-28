@@ -94,7 +94,7 @@
     <PostBuildEvent>@echo $(Targetname)
 SET ModName=BlueprintTotalsTooltip
 SET UseChecker=true
-SET Version=v1.3
+SET Version=v1.4
 
 @echo ...
 
