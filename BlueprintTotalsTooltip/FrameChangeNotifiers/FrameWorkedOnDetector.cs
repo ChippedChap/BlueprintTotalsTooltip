@@ -16,7 +16,7 @@ namespace BlueprintTotalsTooltip.FrameChangeNotifiers
 		static MethodBase TargetMethod()
 		{
 			// This is intended to point to the delegate build.tickAction is set to in MakeNewToils()
-			Type innerClass = AccessTools.Inner(typeof(JobDriver_ConstructFinishFrame), "<>c__DisplayClass4_0");
+			Type innerClass = AccessTools.Inner(typeof(JobDriver_ConstructFinishFrame), "<>c__DisplayClass6_0");
 			return AccessTools.Method(innerClass, "<MakeNewToils>b__1");
 		}
 
@@ -25,7 +25,7 @@ namespace BlueprintTotalsTooltip.FrameChangeNotifiers
 			List<CodeInstruction> instrList = new List<CodeInstruction>(instructions);
 			for (int i = 0; i < instrList.Count; i++)
 			{
-				if (instrList[i].opcode == OpCodes.Stfld && instrList[i].operand == typeof(Frame).GetField("workDone") &&
+				if (instrList[i].opcode == OpCodes.Stfld && (FieldInfo)instrList[i].operand == typeof(Frame).GetField("workDone") &&
 					instrList[i-1].opcode == OpCodes.Add)
 				{
 					yield return new CodeInstruction(OpCodes.Ldloc_1);
