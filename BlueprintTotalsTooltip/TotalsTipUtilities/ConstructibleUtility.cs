@@ -13,6 +13,8 @@ namespace BlueprintTotalsTooltip.TotalsTipUtilities
 		{
 			if (constructible is Blueprint_Install blueprintInstall)
 				return new List<ThingDefCount> { new ThingDefCount(blueprintInstall.GetInnerIfMinified().def, 1) };
+			if (constructible is Frame frame)
+				return new List<ThingDefCount>(constructible.TotalMaterialCost().Select(x => new ThingDefCount(x.thingDef, frame.ThingCountNeeded(x.thingDef))));
 			return new List<ThingDefCount>(constructible.TotalMaterialCost().Select(x => (ThingDefCount)x));
 		}
 
