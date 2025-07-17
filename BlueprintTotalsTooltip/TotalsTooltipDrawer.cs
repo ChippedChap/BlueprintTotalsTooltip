@@ -61,7 +61,7 @@ namespace BlueprintTotalsTooltip
 		#region callbacks
 		public void OnPlaySettingChange()
 		{
-			if (TotalsTooltipMod.ShouldDrawTooltip && !WorldRendererUtility.WorldRenderedNow)
+			if (TotalsTooltipMod.ShouldDrawTooltip && WorldRendererUtility.DrawingMap)
 			{
 				if (NoConstructablesSelected && ZoomIsValid && modInstance.TrackingVisible)
 				{
@@ -77,7 +77,7 @@ namespace BlueprintTotalsTooltip
 
 		public void OnSelectionChange()
 		{
-			if (TotalsTooltipMod.ShouldDrawTooltip && !WorldRendererUtility.WorldRenderedNow)
+			if (TotalsTooltipMod.ShouldDrawTooltip && WorldRendererUtility.DrawingMap)
 			{
 				if (NoConstructablesSelected && modInstance.TrackingVisible)
 					Tracker.TrackVisibleConstructibles();
@@ -107,7 +107,7 @@ namespace BlueprintTotalsTooltip
 
 		public void OnThingAdded(Thing thing)
 		{
-			if (NoConstructablesSelected && modInstance.TrackingVisible && TotalsTooltipMod.ShouldDrawTooltip && !WorldRendererUtility.WorldRenderedNow)
+			if (NoConstructablesSelected && modInstance.TrackingVisible && TotalsTooltipMod.ShouldDrawTooltip && WorldRendererUtility.DrawingMap)
 				if (thing is IConstructible)
 				{
 					Tracker.TryTrackConstructible(thing);
@@ -116,7 +116,7 @@ namespace BlueprintTotalsTooltip
 
 		public void OnThingRemove(Thing thing)
 		{
-			if (NoConstructablesSelected && modInstance.TrackingVisible && TotalsTooltipMod.ShouldDrawTooltip && !WorldRendererUtility.WorldRenderedNow)
+			if (NoConstructablesSelected && modInstance.TrackingVisible && TotalsTooltipMod.ShouldDrawTooltip && WorldRendererUtility.DrawingMap)
 			{
 				if (thing is IConstructible)
 				{
@@ -128,7 +128,7 @@ namespace BlueprintTotalsTooltip
 
 		public void OnGUI()
 		{
-			if (Find.CurrentMap != null && !WorldRendererUtility.WorldRenderedNow)
+			if (Find.CurrentMap != null && WorldRendererUtility.DrawingMap)
 			{
 				cameraChangeDetector.OnGUI();
 				if (TotalsTooltipMod.ShouldDrawTooltip && Tracker.NumberTracked > 0)
